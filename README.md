@@ -54,7 +54,7 @@
 ### 5. Визуализация контекста системы — диаграмма С4
 
 
-[Device management system - Context diagram](https://github.com/dkalyuzhny/architecture-pro-warmhouse/blob/main/Diagrams/Device%20management%20system%20-%20Context%20diagram.plantuml)
+[Device management system - Context diagram](/Diagrams/Device%20management%20system%20-%20Context%20diagram.plantuml)
 
 
 # Задание 2. Проектирование микросервисной архитектуры
@@ -65,16 +65,16 @@
 
 **Диаграмма компонентов (Components)**
 
-[Device management system - Components diagram](./Diagrams/Device%20management%20service%20-%20Components%20diagram.plantuml)
+[Device management system - Components diagram](/Diagrams/Device%20management%20service%20-%20Components%20diagram.plantuml)
 
 **Диаграмма кода (Code)**
 
-[Get temperature - Sequence Diagram](./Diagrams/Get%20temperature%20-%20Sequence%20Diagram.plantuml)
-[Telemetry service - Components diagram](./Diagrams/Telemetry%20service%20-%20Components%20diagram.plantuml)
+[Get temperature - Sequence Diagram](/Diagrams/Get%20temperature%20-%20Sequence%20Diagram.plantuml)
+[Telemetry service - Components diagram](/Diagrams/Telemetry%20service%20-%20Components%20diagram.plantuml)
 
 # Задание 3. Разработка ER-диаграммы
 
-[Device management system - ER](./Diagrams/Device%20management%20system%20-%20ER.plantuml)
+[Device management system - ER](/Diagrams/Device%20management%20system%20-%20ER.plantuml)
 
 # Задание 4. Создание и документирование API
 
@@ -84,7 +84,7 @@ REST API. В данном прототипе (или MVP) в рамках зад
 
 ### 2. Документация API
 
-[OpenAPI-API](../OpenAPI/API.yml)
+[OpenAPI-API](/OpenAPI/API.yml)
 
 # Задание 5. Работа с docker и docker-compose
 
