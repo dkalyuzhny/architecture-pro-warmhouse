@@ -61,7 +61,7 @@
 
 **Диаграмма контейнеров (Containers)**
 
-[Device management system - Containers diagram](../Diagrams/Device%20management%20system%20-%20Containers%20diagram.plantuml)
+[Device management system - Containers diagram](/Diagrams/Device%20management%20system%20-%20Containers%20diagram.plantuml)
 
 **Диаграмма компонентов (Components)**
 
