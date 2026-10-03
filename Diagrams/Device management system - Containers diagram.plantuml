@@ -1,0 +1,35 @@
+@startuml
+
+!include C4_Container.puml
+AddRelTag("dashed", $textColor=$ARROW_COLOR, $lineColor=$ARROW_COLOR, $lineStyle=DashedLine())
+
+SHOW_PERSON_OUTLINE()
+LAYOUT_WITH_LEGEND()
+
+title Smart Home - C4 Container diagram
+
+Person(user, "Пользователь","Управляет датчиками и получает их текущие показания")
+
+System_Ext(temperatureApi, "Temperature API","Внешний сервис предоставления текущей температуры")
+
+System_Boundary(smartHome, "Smart Home") {
+
+    Container(deviceService,"Device Management Service","REST / Go", "Регистрация, изменение, удаление и получение информации о датчиках")
+
+    Container(telemetryService, "Telemetry Service","REST / Go", "Получение и обновление текущих показаний датчиков")
+
+    ContainerDb(database,"Smart Home DB","PostgreSQL", "Хранит информацию о датчиках и их текущих показаниях")
+}
+
+
+Rel(user, deviceService, "Управляет датчиками", "HTTP/REST", $tags="dashed")
+
+Rel(user, telemetryService,"Получает показания датчиков", "HTTP/REST", $tags="dashed")
+
+Rel(deviceService, database, "Читает и изменяет данные датчиков","SQL", $tags="dashed")
+
+Rel(telemetryService, database, "Читает и обновляет показания", "SQL", $tags="dashed")
+
+Rel(telemetryService, temperatureApi,"Получает актуальную температуру", "HTTP/REST", $tags="dashed")
+
+@enduml

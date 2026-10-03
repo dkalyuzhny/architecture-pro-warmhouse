@@ -1,0 +1,38 @@
+@startuml
+
+title Получение текущей температуры
+
+actor User
+
+participant "Telemetry API" as API
+participant "Telemetry Service" as Service
+participant "Telemetry Repository" as Repository
+participant "Temperature API Client" as Client
+participant "Temperature API" as TemperatureAPI
+database "PostgreSQL" as DB
+
+User -> API : GET /telemetry/{deviceId}
+
+API -> Service : getTelemetry(deviceId)
+
+Service -> Repository : getSensor(deviceId)
+
+Repository -> DB : SELECT sensor
+
+DB --> Repository : Sensor
+
+Repository --> Service : Sensor
+
+Service -> Client : getTemperature(sensor.location)
+
+Client -> TemperatureAPI : GET /temperature?location=<<location>>
+
+TemperatureAPI --> Client : Temperature
+
+Client --> Service : Temperature
+
+Service --> API : TelemetryResponse
+
+API --> User : 200 OK\nvalue, unit, status, lastUpdated
+
+@enduml

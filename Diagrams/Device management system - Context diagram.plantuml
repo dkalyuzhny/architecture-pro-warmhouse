@@ -1,0 +1,25 @@
+@startuml 
+
+!include C4_Context.puml
+SHOW_PERSON_OUTLINE()
+LAYOUT_WITH_LEGEND()
+
+AddRelTag("dashed", $textColor=$ARROW_COLOR, $lineColor=$ARROW_COLOR, $lineStyle=DashedLine())
+
+
+title Smart Home - C4 Context diagram
+
+Person(user, "Пользователь", "Управляет датчиками и просматривает данные умного дома")
+
+System(smart_home, "Smart Home", "Монолитное приложение для управления датчиками и просмотра их показаний")
+
+System_Ext(temperature_api, "Temperature API", "Cервис получения текущей температуры")
+
+System_Ext(sensor, "Температурный датчик", "Источник данных о температуре")
+
+Rel(user, smart_home, "Управляет датчиками и просматривает показания", "HTTP/REST", $tags="dashed")
+Rel(smart_home, temperature_api, "Запрашивает актуальную температуру", "HTTP/REST", $tags="dashed")
+
+Rel(sensor, temperature_api, "Передает/предоставляет данные о температуре", "Внешнее взаимодействие", $tags="dashed")
+
+@enduml
