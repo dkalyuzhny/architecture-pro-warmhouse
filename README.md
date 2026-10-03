@@ -61,20 +61,20 @@
 
 **Диаграмма контейнеров (Containers)**
 
-[Device management system - Containers diagram](https://github.com/dkalyuzhny/architecture-pro-warmhouse/blob/main/Diagrams/Device%20management%20system%20-%20Containers%20diagram.plantuml)
+[Device management system - Containers diagram](./Diagrams/Device%20management%20system%20-%20Containers%20diagram.plantuml)
 
 **Диаграмма компонентов (Components)**
 
-[Device management system - Components diagram](https://github.com/dkalyuzhny/architecture-pro-warmhouse/blob/main/Diagrams/Device%20management%20service%20-%20Components%20diagram.plantuml)
+[Device management system - Components diagram](./Diagrams/Device%20management%20service%20-%20Components%20diagram.plantuml)
 
 **Диаграмма кода (Code)**
 
-[Get temperature - Sequence Diagram](https://github.com/dkalyuzhny/architecture-pro-warmhouse/blob/main/Diagrams/Get%20temperature%20-%20Sequence%20Diagram.plantuml)
-[Telemetry service - Components diagram](https://github.com/dkalyuzhny/architecture-pro-warmhouse/blob/main/Diagrams/Telemetry%20service%20-%20Components%20diagram.plantuml)
+[Get temperature - Sequence Diagram](./Diagrams/Get%20temperature%20-%20Sequence%20Diagram.plantuml)
+[Telemetry service - Components diagram](./Diagrams/Telemetry%20service%20-%20Components%20diagram.plantuml)
 
 # Задание 3. Разработка ER-диаграммы
 
-[Device management system - ER](https://github.com/dkalyuzhny/architecture-pro-warmhouse/blob/main/Diagrams/Device%20management%20system%20-%20ER.plantuml)
+[Device management system - ER](./Diagrams/Device%20management%20system%20-%20ER.plantuml)
 
 # Задание 4. Создание и документирование API
 
@@ -84,7 +84,7 @@ REST API. В данном прототипе (или MVP) в рамках зад
 
 ### 2. Документация API
 
-[OpenAPI-API](https://github.com/dkalyuzhny/architecture-pro-warmhouse/blob/main/OpenAPI/API.yml)
+[OpenAPI-API](../OpenAPI/API.yml)
 
 # Задание 5. Работа с docker и docker-compose
 
