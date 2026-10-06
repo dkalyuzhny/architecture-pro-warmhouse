@@ -1,0 +1,35 @@
+@startuml TelemetryService_Components
+
+'!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+!include C4_Component.puml
+
+title Telemetry Service — C4 Component Diagram
+
+System_Ext(temperatureApi, "Temperature API", "Внешний сервис температуры")
+
+ContainerDb_Ext(database, "Smart Home DB", "PostgreSQL", "Общая база данных Smart Home")
+
+Container_Boundary(telemetryService, "Telemetry Service") {
+
+    Component(telemetryApi, "Telemetry API", "REST Controller", "Обрабатывает запросы получения и изменения показаний")
+
+    Component(telemetryManager, "Telemetry Service", "Application Service", "Управляет получением и обновлением показаний")
+
+    Component(telemetryRepository, "Telemetry Repository", "Repository", "Работает с показаниями датчиков в PostgreSQL")
+
+    Component(temperatureClient, "Temperature API Client", "HTTP Client", "Получает актуальную температуру из внешнего сервиса")
+}
+
+
+Rel(telemetryApi, telemetryManager, "Передает запрос")
+
+Rel(telemetryManager, telemetryRepository, "Читает / обновляет показания")
+
+Rel(telemetryRepository, database, "Read / Update", "SQL")
+
+Rel(telemetryManager, temperatureClient, "Запрашивает текущую температуру")
+
+Rel(temperatureClient, temperatureApi, "GET temperature", "HTTP/REST")
+
+@enduml
