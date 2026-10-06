@@ -11,25 +11,37 @@ title Smart Home - C4 Container diagram
 Person(user, "Пользователь","Управляет датчиками и получает их текущие показания")
 
 System_Ext(temperatureApi, "Temperature API","Внешний сервис предоставления текущей температуры")
+System_Ext(paymentProvider, "Платежная система", "Внешний платежный провайдер")
 
 System_Boundary(smartHome, "Smart Home") {
 
+    Container(apiGateway, "API Gateway", "HTTP / REST", "Единая точка входа, маршрутизация запросов к микросервисам")
+
+    Container(userService, "User Service", "C# / REST", "Управление пользователями и доступом к домам")
+    
     Container(deviceService,"Device Management Service","REST / Go", "Регистрация, изменение, удаление и получение информации о датчиках")
 
     Container(telemetryService, "Telemetry Service","REST / Go", "Получение и обновление текущих показаний датчиков")
 
-    ContainerDb(database,"Smart Home DB","PostgreSQL", "Хранит информацию о датчиках и их текущих показаниях")
+    Container(paymentService, "Payment Service", "REST", "Управление подписками")
+
+    ContainerDb(mainDb,"Smart Home DB","PostgreSQL", "Хранит информацию о датчиках и их текущих показаниях")
+
+    ContainerDb(telemetryDb, "Telemetry DB", "MangoDB", "Временные ряды показаний устройств")
+
 }
 
 
-Rel(user, deviceService, "Управляет датчиками", "HTTP/REST", $tags="dashed")
-
-Rel(user, telemetryService,"Получает показания датчиков", "HTTP/REST", $tags="dashed")
-
-Rel(deviceService, database, "Читает и изменяет данные датчиков","SQL", $tags="dashed")
-
-Rel(telemetryService, database, "Читает и обновляет показания", "SQL", $tags="dashed")
-
-Rel(telemetryService, temperatureApi,"Получает актуальную температуру", "HTTP/REST", $tags="dashed")
+Rel(user, apiGateway, "Работает с системой", "HTTPS / REST")
+Rel(apiGateway, userService, "Пользователи и доступ", "REST")
+Rel(apiGateway, deviceService, "Управление устройствами", "REST")
+Rel(apiGateway, telemetryService, "Просмотр телеметрии", "REST")
+Rel(apiGateway, paymentService, "Подписки и платежи", "REST")
+Rel(userService, mainDb, "Читает и изменяет пользователей", "SQL")
+Rel(deviceService, mainDb, "Читает и изменяет дома и устройства", "SQL")
+Rel(paymentService, mainDb, "Хранит состояние подписок", "SQL")
+Rel(telemetryService, telemetryDb, "Записывает и читает логи")
+Rel(telemetryService, temperatureApi, "Получает актуальную температуру",    "HTTP / REST")
+Rel(paymentService, paymentProvider, "Проводит платежи",    "HTTPS / REST")
 
 @enduml
