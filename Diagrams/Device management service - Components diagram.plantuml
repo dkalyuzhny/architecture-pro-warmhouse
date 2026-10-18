@@ -1,0 +1,25 @@
+@startuml DeviceService_Components
+
+!include C4_Component.puml
+
+title Device Management Service — C4 Component Diagram
+
+ContainerDb_Ext(database, "Smart Home DB", "PostgreSQL", "Общая база данных Smart Home")
+
+Container_Boundary(deviceService, "Device Management Service") {
+
+    Component(deviceApi, "Device API", "REST Controller", "Принимает запросы управления датчиками")
+
+    Component(deviceServiceComponent, "Device Service", "Application Service", "Реализует операции управления датчиками")
+
+    Component(deviceRepository, "Device Repository", "Repository", "Выполняет операции с данными датчиков")
+}
+
+
+Rel(deviceApi, deviceServiceComponent, "Передает запросы управления датчиками")
+
+Rel(deviceServiceComponent, deviceRepository, "Создает, получает, изменяет и удаляет датчики")
+
+Rel(deviceRepository, database, "Читает и изменяет данные", "SQL")
+
+@enduml

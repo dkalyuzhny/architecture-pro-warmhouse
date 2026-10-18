@@ -1,0 +1,316 @@
+openapi: 3.0.3
+
+info:
+  title: Smart Home API
+  version: 1.0.0
+  description: >
+    API микросервисов Device Service и Telemetry Service.
+
+paths:
+  /api/v1/devices:
+    post:
+      tags:
+        - Device Service
+      summary: Зарегистрировать устройство
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDeviceRequest"
+            examples:
+              temperatureSensor:
+                value:
+                  houseId: 10
+                  deviceTypeId: 1
+                  serialNumber: TMP-2026-000042
+                  name: Датчик температуры в гостиной
+                  location: living-room
+
+      responses:
+        "201":
+          description: Устройство создано
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+
+        "400":
+          description: Некорректный запрос
+
+        "404":
+          description: Дом или тип устройства не найден
+
+        "409":
+          description: Устройство с таким серийным номером уже существует
+
+        "500":
+          description: Внутренняя ошибка
+
+  /api/v1/devices/{deviceId}:
+    get:
+      tags:
+        - Device Service
+      summary: Получить информацию об устройстве
+
+      parameters:
+        - $ref: "#/components/parameters/DeviceId"
+
+      responses:
+        "200":
+          description: Устройство найдено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+              examples:
+                device:
+                  value:
+                    id: 42
+                    houseId: 10
+                    deviceTypeId: 1
+                    serialNumber: TMP-2026-000042
+                    name: Датчик температуры в гостиной
+                    location: living-room
+                    status: active
+                    createdAt: "2026-10-03T15:30:00Z"
+
+        "404":
+          description: Устройство не найдено
+
+        "500":
+          description: Внутренняя ошибка
+
+    delete:
+      tags:
+        - Device Service
+      summary: Удалить устройство
+
+      parameters:
+        - $ref: "#/components/parameters/DeviceId"
+
+      responses:
+        "204":
+          description: Устройство удалено
+
+        "404":
+          description: Устройство не найдено
+
+        "409":
+          description: Устройство не может быть удалено
+
+        "500":
+          description: Внутренняя ошибка
+
+  /api/v1/telemetry:
+    post:
+      tags:
+        - Telemetry Service
+      summary: Сохранить новое показание устройства
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTelemetryRequest"
+            examples:
+              temperature:
+                value:
+                  deviceId: 42
+                  value: 22.7
+                  status: active
+                  timestamp: "2026-10-03T15:35:21Z"
+
+      responses:
+        "201":
+          description: Показание сохранено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TelemetryData"
+
+        "400":
+          description: Некорректные данные
+
+        "404":
+          description: Устройство не найдено
+
+        "500":
+          description: Внутренняя ошибка
+
+  /api/v1/telemetry/{deviceId}:
+    get:
+      tags:
+        - Telemetry Service
+      summary: Получить показания с устройства
+
+      parameters:
+        - $ref: "#/components/parameters/DeviceId"
+
+        - name: latest
+          in: query
+          required: false
+          description: Вернуть только последнее показание
+          schema:
+            type: boolean
+            default: false
+
+      responses:
+        "200":
+          description: Телеметрия устройства
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TelemetryResponse"
+
+        "404":
+          description: Устройство не найдено
+
+        "500":
+          description: Внутренняя ошибка
+
+components:
+  parameters:
+    DeviceId:
+      name: deviceId
+      in: path
+      required: true
+      schema:
+        type: integer
+      example: 42
+
+  schemas:
+    CreateDeviceRequest:
+      type: object
+
+      required:
+        - houseId
+        - deviceTypeId
+        - serialNumber
+        - name
+        - location
+
+      properties:
+        houseId:
+          type: integer
+          example: 10
+
+        deviceTypeId:
+          type: integer
+          example: 1
+
+        serialNumber:
+          type: string
+          example: TMP-2026-000042
+
+        name:
+          type: string
+          example: Датчик температуры в гостиной
+
+        location:
+          type: string
+          example: living-room
+
+    Device:
+      type: object
+
+      properties:
+        id:
+          type: integer
+          example: 42
+
+        houseId:
+          type: integer
+          example: 10
+
+        deviceTypeId:
+          type: integer
+          example: 1
+
+        serialNumber:
+          type: string
+          example: TMP-2026-000042
+
+        name:
+          type: string
+          example: Датчик температуры в гостиной
+
+        location:
+          type: string
+          example: living-room
+
+        status:
+          type: string
+          example: active
+
+        createdAt:
+          type: string
+          format: date-time
+
+    CreateTelemetryRequest:
+      type: object
+
+      required:
+        - deviceId
+        - value
+
+      properties:
+        deviceId:
+          type: integer
+          example: 42
+
+        value:
+          type: number
+          format: double
+          example: 22.7
+
+        status:
+          type: string
+          example: active
+
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-10-03T15:35:21Z"
+
+    TelemetryData:
+      type: object
+
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1001
+
+        deviceId:
+          type: integer
+          example: 42
+
+        value:
+          type: number
+          format: double
+          example: 22.7
+
+        status:
+          type: string
+          example: active
+
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-10-03T15:35:21Z"
+
+    TelemetryResponse:
+      type: object
+
+      properties:
+        deviceId:
+          type: integer
+          example: 42
+
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/TelemetryData"

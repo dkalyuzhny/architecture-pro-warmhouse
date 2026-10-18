@@ -1,0 +1,60 @@
+@startuml SmartHome_ER
+
+title Smart Home — ER Diagram
+
+
+entity "User" as user {
+    * id : integer <<PK>>
+    --
+    name : varchar(100)
+    email : varchar(255)
+    created_at : timestamp
+}
+
+entity "House" as house {
+    * id : integer <<PK>>
+    --
+    user_id : integer <<FK>>
+    name : varchar(100)
+    address : varchar(255)
+    created_at : timestamp
+}
+
+entity "DeviceType" as device_type {
+    * id : integer <<PK>>
+    --
+    name : varchar(100)
+    description : varchar(255)
+    unit : varchar(20)
+}
+
+entity "Device" as device {
+    * id : integer <<PK>>
+    --
+    house_id : integer <<FK>>
+    type_id : integer <<FK>>
+    serial_number : varchar(100) <<UNIQUE>>
+    name : varchar(100)
+    location : varchar(100)
+    status : varchar(20)
+    created_at : timestamp
+}
+
+entity "TelemetryData" as telemetry {
+    * id : bigint <<PK>>
+    --
+    device_id : integer <<FK>>
+    value : double
+    status : varchar(20)
+    timestamp : timestamp
+}
+
+user ||--o{ house : "владеет"
+
+house ||--o{ device : "содержит"
+
+device_type ||--o{ device : "определяет тип"
+
+device ||--o{ telemetry : "генерирует"
+
+@enduml
